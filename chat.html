@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload Property</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="upload-container">
+        <h2>Upload Property</h2>
+
+        <form id="uploadForm" action="process-upload.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="propertyName">Property Name:</label>
+                <input type="text" class="form-control" id="propertyName" name="propertyName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="propertyDescription">Property Description:</label>
+                <textarea class="form-control" id="propertyDescription" name="propertyDescription" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="propertyImage">Property Image:</label>
+                <input type="file" class="form-control-file" id="propertyImage" name="propertyImage" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn btn-success submit-btn">Upload Property</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional, only if needed) -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript for form validation -->
+    <script>
+        function validateForm() {
+            var propertyName = document.getElementById("propertyName").value;
+            var propertyDescription = document.getElementById("propertyDescription").value;
+            var propertyImage = document.getElementById("propertyImage").value;
+
+            if (propertyName.trim() === "" || propertyDescription.trim() === "" || propertyImage.trim() === "") {
+                alert("Please fill out all fields.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+</body>
+
+</html>
