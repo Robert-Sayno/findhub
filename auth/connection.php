@@ -2,7 +2,7 @@
 $server = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'login_register_db';
+$database = 'findhub';
 
 if (isset($_POST))
 
