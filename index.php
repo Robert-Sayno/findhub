@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Custom Website</title>
+	<title>findhubuganda</title>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,12 +18,19 @@
 				</ul>
 			</nav>
 			<div class="center">
-			<h1>At findhubuganda,</h1>
-			<h2>Let's find the lost</h2>
-			<div class="buttons">
-			<button>login</button>
-			<button class="btn2">Signup</button>
-		</div>
-		</div>
+    <h1>At findhubuganda,</h1>
+    <h2>Let's find the lost</h2>
+
+    <div class="buttons">
+        <a href="auth/index.php">
+            <button>Login</button>
+        </a>
+        <a href="auth/register.php" class="btn2">
+
+            <button>Signup</button>
+        </a>
+    </div>
+</div>
+
 </body>
 </html>
