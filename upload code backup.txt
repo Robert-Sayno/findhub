@@ -160,10 +160,6 @@
             </form>
 
             <?php
-            // Display detailed error messages (remove/comment in production)
-            ini_set('display_errors', 1);
-            error_reporting(E_ALL);
-
             // Check if the form is submitted
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 include_once('auth/connection.php');
@@ -174,35 +170,25 @@
                 $found_location = mysqli_real_escape_string($conn, $_POST['found_location']);
                 $contact_info = mysqli_real_escape_string($conn, $_POST['contact_info']);
 
-                // File type validation
-                $allowed_types = array("jpg", "jpeg", "png", "gif");
-                $file_extension = strtolower(pathinfo($_FILES["property_image"]["name"], PATHINFO_EXTENSION));
+                // Handle file upload
+                $target_dir = "uploads/";
+                $target_file = $target_dir . basename($_FILES["property_image"]["name"]);
 
-                if (!in_array($file_extension, $allowed_types)) {
-                    echo "<p style='color: red;'>Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.</p>";
-                } else {
-                    // Proceed with file upload and database insertion
-               
-                    $target_dir = '/opt/lampp/htdocs/findhub/uploads/';
+                if (move_uploaded_file($_FILES["property_image"]["tmp_name"], $target_file)) {
+                    // File upload successful
+                    $image_path = $target_file;
 
-                    $target_file = $target_dir . basename($_FILES["property_image"]["name"]);
+                    // Insert data into the database
+                    $sql = "INSERT INTO properties (property_name, property_description, found_location, contact_info, image_path)
+                            VALUES ('$property_name', '$property_description', '$found_location', '$contact_info', '$image_path')";
 
-                    if (move_uploaded_file($_FILES["property_image"]["tmp_name"], $target_file)) {
-                        // File upload successful
-                        $image_path = $target_file;
-
-                        // Insert data into the database
-                        $sql = "INSERT INTO properties (property_name, property_description, found_location, contact_info, image_path)
-                                VALUES ('$property_name', '$property_description', '$found_location', '$contact_info', '$image_path')";
-
-                        if (mysqli_query($conn, $sql)) {
-                            echo "<p style='color: green;'>Property uploaded successfully!</p>";
-                        } else {
-                            echo "<p style='color: red;'>Error: " . mysqli_error($conn) . "</p>";
-                        }
+                    if (mysqli_query($conn, $sql)) {
+                        echo "<p style='color: green;'>Property uploaded successfully!</p>";
                     } else {
-                        echo "<p style='color: red;'>Sorry, there was an error uploading your file.</p>";
+                        echo "<p style='color: red;'>Error: " . mysqli_error($conn) . "</p>";
                     }
+                } else {
+                    echo "<p style='color: red;'>Sorry, there was an error uploading your file.</p>";
                 }
 
                 // Close the database connection
@@ -212,6 +198,6 @@
         </div>
     </div>
 
-   
+  
 </body>
 </html>

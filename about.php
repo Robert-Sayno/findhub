@@ -85,10 +85,10 @@
     <header>
         <h1>About Us</h1>
         <nav>
-            <a href="#home">Home</a>
+            <a href="index.php">Home</a>
             <a href="#services">Services</a>
             <a href="#team">Team</a>
-            <a href="#contact">Contact</a>
+            <a href="contact.php">Contact</a>
         </nav>
     </header>
 
