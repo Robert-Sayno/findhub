@@ -93,42 +93,41 @@
 
     <div class="property-container">
         <h2>Find Property</h2>
-
         <?php
-        // Retrieve and display property information from the database
-        include_once('auth/connection.php');
+// Retrieve and display property information from the database
+include_once('auth/connection.php');
 
-        $sql = "SELECT * FROM properties";
-        $result = mysqli_query($conn, $sql);
+$sql = "SELECT * FROM properties";
+$result = mysqli_query($conn, $sql);
 
-        if ($result) {
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $imagePath = 'uploads/' . basename($row['image_path']);
-                    echo '<div class="property-card">';
-                    echo '<img src="' . $imagePath . '" alt="Property Image">';
-                    echo '<h3>' . $row['property_name'] . '</h3>';
-                    echo '<p><strong>Description:</strong> ' . $row['property_description'] . '</p>';
-                    echo '<p><strong>Location:</strong> ' . $row['found_location'] . '</p>';
-                    echo '<p><strong>Contact Info:</strong> ' . $row['contact_info'] . '</p>';
-                    echo '</div>';
-                }
-            } else {
-                echo '<p>No properties found.</p>';
-            }
-        } else {
-            echo '<p style="color: red;">Error: ' . mysqli_error($conn) . '</p>';
+if ($result) {
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $imagePath = 'uploads/' . basename($row['image_path']);
+            echo '<div class="property-card">';
+            echo '<img src="' . $imagePath . '" alt="Property Image">';
+            echo '</div>';
         }
+    } else {
+        echo '<p>No properties found.</p>';
+    }
+} else {
+    echo '<p style="color: red;">Error: ' . mysqli_error($conn) . '</p>';
+}
 
-        // Display detailed error information
-        echo '<pre>';
-        print_r(error_get_last());
-        echo '</pre>';
+// Display detailed error information
+echo '<pre>';
+print_r(error_get_last());
+echo '</pre>';
 
-        // Close the database connection
-        mysqli_close($conn);
-        ?>
+// Close the database connection
+mysqli_close($conn);
+?>
 
+       
+
+
+       
     </div>
 
     <footer>
