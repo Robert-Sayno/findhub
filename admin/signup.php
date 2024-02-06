@@ -6,19 +6,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['signup'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
 
-        // Hash the password before storing it
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insert admin data into the database
-        $sql = "INSERT INTO admins (username, password) VALUES ('$username', '$hashed_password')";
-
-        if (mysqli_query($conn, $sql)) {
-            // Redirect to the login page upon successful signup
-            header('Location: login.php');
-            exit();
+        // Check if passwords match
+        if ($password !== $confirm_password) {
+            $error_message = 'Passwords do not match.';
         } else {
-            $error_message = 'Error creating admin account.';
+            // Hash the password before storing it
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert admin data into the database
+            $sql = "INSERT INTO admins (username, password) VALUES ('$username', '$hashed_password')";
+
+            if (mysqli_query($conn, $sql)) {
+                // Redirect to the login page upon successful signup
+                header('Location: login.php');
+                exit();
+            } else {
+                $error_message = 'Error creating admin account.';
+            }
         }
     } elseif (isset($_POST['login'])) {
         // Redirect to the login page
@@ -53,6 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label for="password">Password:</label>
             <input type="password" name="password" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" required>
 
             <button type="submit" name="signup">Signup</button>
             <p>Already have an account? <a href="login.php">Login here</a>.</p>

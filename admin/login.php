@@ -1,24 +1,33 @@
+<!-- admin/login.php -->
 <?php
 include_once('../auth/connection.php');
 include_once('../auth/auth_functions.php');
+
+$error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['login'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        // Validate the admin login credentials
-        if (validateAdminLogin($username, $password)) {
-            // Redirect to the admin dashboard upon successful login
-            header('Location: dashboard.php');
-            exit();
-        } else {
-            $error_message = 'Invalid username or password.';
+        try {
+            // Validate the admin login credentials
+            if (validateAdminLogin($username, $password)) {
+                // Redirect to the admin dashboard upon successful login
+                header('Location: dashboard.php');
+                exit();
+            } else {
+                $error_message = 'Invalid username or password.';
+            }
+        } catch (Exception $e) {
+            $error_message = 'Error: ' . $e->getMessage();
+            // Log the error for further investigation
+            error_log('Login Error: ' . $e->getMessage(), 0);
         }
     } elseif (isset($_POST['signup'])) {
-        // Redirect to the login page
-        header('Location: login.php');
-        exit();
+        // Handle admin signup logic here
+        // Add necessary code to create a new admin account
+        // Redirect to the login page after successful signup
     }
 }
 ?>
