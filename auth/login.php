@@ -31,7 +31,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['name'] = $name;
                 $_SESSION['username'] = $username;
                 $_SESSION['password'] = $password;
-                header('location:welcome.php');
+                header('location:../property.php');
             }
         } else {
             echo "<script>alert('Invalid Username or Password');</script>";

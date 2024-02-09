@@ -196,7 +196,7 @@
                                 VALUES ('$property_name', '$property_description', '$found_location', '$contact_info', '$image_path')";
 
                         if (mysqli_query($conn, $sql)) {
-                            echo "<p style='color: green;'>Property uploaded successfully!</p>";
+                            echo "<script>alert('Property uploaded successfully, click ok to view your property!'); window.location.href='property.php';</script>";
                         } else {
                             echo "<p style='color: red;'>Error: " . mysqli_error($conn) . "</p>";
                         }

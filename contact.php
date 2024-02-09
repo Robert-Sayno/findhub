@@ -1,3 +1,50 @@
+<?php
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Include the connection script with the correct path
+include_once(__DIR__ . '/auth/connection.php');
+
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if the $conn variable is defined
+    if (!isset($conn) || $conn === null) {
+        // If not defined or null, create a new connection
+        include_once(__DIR__ . '/auth/connection.php');
+    }
+
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $message = mysqli_real_escape_string($conn, $_POST['message']);
+
+    // Use prepared statement
+    $stmt = $conn->prepare("INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)");
+    $stmt->bind_param('sss', $name, $email, $message);
+    
+    // Execute the statement
+    $result = $stmt->execute();
+
+    if ($result) {
+        // If successful, display a JavaScript alert and redirect
+        echo '<script>alert("Thank you! Your message has been recieved!");</script>';
+        echo '<script>window.location.href = "property.php";</script>';
+        exit();
+    } else {
+        // If there's an error, set an error message
+        $error_message = 'Error submitting the form: ' . $stmt->error;
+    }
+
+    // Close the statement
+    $stmt->close();
+}
+
+// Close the database connection
+$conn->close();
+?>
+<!-- Rest of your HTML code remains unchanged -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +52,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
     <style>
+        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -80,6 +128,8 @@
             bottom: 0;
             width: 100%;
         }
+    
+        /* Your existing CSS styles remain unchanged */
     </style>
 </head>
 <body>
@@ -94,7 +144,11 @@
 
     <div class="container">
         <div class="contact-form">
-            <form action="#" method="post">
+            <?php if (isset($error_message)) : ?>
+                <p style="color: red;"><?php echo $error_message; ?></p>
+            <?php endif; ?>
+
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                 <div class="form-group">
                     <label for="name">Your Name:</label>
                     <input type="text" id="name" name="name" required>

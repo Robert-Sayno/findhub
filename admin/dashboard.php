@@ -27,10 +27,21 @@ if ($result_properties) {
     die('Error fetching properties: ' . mysqli_error($conn));
 }
 
+// Fetch messages from the database
+$sql_messages = "SELECT * FROM contact_messages";
+$result_messages = mysqli_query($conn, $sql_messages);
+
+// Check if the query was successful
+if ($result_messages) {
+    $messages = mysqli_fetch_all($result_messages, MYSQLI_ASSOC);
+} else {
+    // Handle the error, you can customize this part based on your needs
+    die('Error fetching messages: ' . mysqli_error($conn));
+}
+
 // Close the database connection
 mysqli_close($conn);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,10 +51,10 @@ mysqli_close($conn);
     <title>Admin Dashboard</title>
     <style>
         body {
-            background-image: url(lost_property_bg.jpg);
+            background-image: url('lost_property_bg.jpg');
             background-size: cover;
             background-position: center;
-            color: white;
+            color: #7734eb;
             font-family: Arial, sans-serif;
         }
 
@@ -170,7 +181,7 @@ mysqli_close($conn);
                             <td><?php echo $property['found_location']; ?></td>
                             <td><?php echo $property['contact_info']; ?></td>
                             <td>
-                                <img src="<?php echo 'uploads/' . basename($property['image_path']); ?>" alt="Property Image" class="property-image">
+                                <img src="<?php echo '../uploads/' . basename($property['image_path']); ?>" alt="Property Image" class="property-image">
                             </td>
                             <td>
                                 <a href="edit_property.php?id=<?php echo $property['property_id']; ?>">Edit</a>
@@ -181,7 +192,40 @@ mysqli_close($conn);
                 </tbody>
             </table>
         </div>
-        
+
+        <!-- Display messages in a table -->
+
+            <h3>Messages</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Message ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($messages as $message) : ?>
+                        <tr>
+                            <td><?php echo $message['message_id']; ?></td>
+                            <td><?php echo $message['name']; ?></td>
+                            <td><?php echo $message['email']; ?></td>
+                            <td><?php echo $message['subject']; ?></td>
+                            <td><?php echo $message['message']; ?></td>
+                            <td>
+                            <a href="delete_message.php?id=<?php echo urlencode($message['message_id']); ?>" onclick="return confirm('Are you sure you want to delete this message?')">Delete</a>
+
+                                
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
         <p><a class="logout-btn" href="logout.php">Logout</a></p>
     </div>
 </body>

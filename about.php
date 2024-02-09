@@ -86,7 +86,7 @@
         <h1>About Us</h1>
         <nav>
             <a href="index.php">Home</a>
-            <a href="#services">Services</a>
+            
             <a href="#team">Team</a>
             <a href="contact.php">Contact</a>
         </nav>
@@ -94,23 +94,20 @@
 
     <div class="container">
         <section class="content">
-            <p>Welcome to our company! We are a passionate team dedicated to...</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <p>Our values include integrity, customer satisfaction, accountability, transparency, and innovation.</p>
+            <p>Discover FIndHub, your trusted partner in finding lost property</p>
+            <p>With a legacy of 3 years, we are committed to excellence</p>
+            <p> and customer satisfaction. Join us on a journey of innovation and quality service</p>
+        
         </section>
         <section class="team" id="team">
             <h2>Our Team</h2>
             <div class="member">
                 <img src="lost_bg.jpg" alt="Team Member 1">
-                <p>John Doe<br>Founder & CEO</p>
-            </div>
-            <div class="member">
-                <img src="lost_bg.jpg" alt="Team Member 2">
-                <p>Jane Smith<br>Lead Designer</p>
-            </div>
+                <p>Joseph Katamba<br>Founder & CEO</p>
+    </div>
             <div class="member">
                 <img src="lost_bg.jpg" alt="Team Member 3">
-                <p>John Smith<br>Lead Developer</p>
+                <p>Kato Joseph<br>Lead Developer</p>
             </div>
             <!-- Add more team members as needed -->
         </section>

@@ -1,34 +1,32 @@
 <?php
-// Include authentication check and necessary files
-include_once('../auth/auth_functions.php');
 include_once('../auth/connection.php');
 
-// Check if the user is authenticated, otherwise redirect to login
-if (!isAuthenticated()) {
-    header('Location: login.php');
-    exit();
-}
-
-// Check if the user ID is provided in the URL
-if (isset($_GET['id'])) {
+// Check if user ID is set and valid
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $user_id = $_GET['id'];
 
-    // Fetch the user data based on the ID
-    $sql = "SELECT * FROM tbl_user WHERE user_id = '$user_id'";
-    $result = mysqli_query($conn, $sql);
+    // Fetch user details from the database
+    $sql_user_details = "SELECT * FROM tbl_user WHERE user_id = $user_id";
+    $result_user_details = mysqli_query($conn, $sql_user_details);
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
+    // Check if the query was successful
+    if ($result_user_details && mysqli_num_rows($result_user_details) > 0) {
+        $user_details = mysqli_fetch_assoc($result_user_details);
     } else {
-        // User not found, handle the error or redirect
-        header('Location: dashboard.php');
-        exit();
+        // Handle the error, you can customize this part based on your needs
+        die('Error fetching user details: ' . mysqli_error($conn));
     }
 } else {
-    // User ID not provided, handle the error or redirect
-    header('Location: dashboard.php');
+    // Debugging: Display the received ID for investigation
+    die('Received ID: ' . $_GET['id']);
+
+    // Redirect back to the admin_dashboard.php with an error message
+    header("Location: admin_dashboard.php?error=Invalid user ID");
     exit();
 }
+
+// Close the database connection
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -38,17 +36,32 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
-    <!-- Add your additional head content here -->
+    <style>
+        /* Your styles go here */
+    </style>
 </head>
 
 <body>
-    <div class="dashboard-container">
-        <h2>Edit User</h2>
-        
-        <!-- Add your edit user form and content here -->
-        
-        <p><a class="logout-btn" href="logout.php">Logout</a></p>
-    </div>
+    <h2>Edit User</h2>
+
+    <form action="update_user.php" method="post">
+        <input type="hidden" name="user_id" value="<?php echo $user_details['user_id']; ?>">
+
+        <!-- Display user details in input fields for editing -->
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="<?php echo $user_details['name']; ?>" required><br>
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="<?php echo $user_details['username']; ?>" required><br>
+
+        <label for="status">Status:</label>
+        <select name="status">
+            <option value="1" <?php echo ($user_details['active'] == 1) ? 'selected' : ''; ?>>Active</option>
+            <option value="0" <?php echo ($user_details['active'] == 0) ? 'selected' : ''; ?>>Inactive</option>
+        </select><br>
+
+        <input type="submit" value="Update">
+    </form>
 </body>
 
 </html>
