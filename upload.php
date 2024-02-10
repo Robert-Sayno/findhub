@@ -36,6 +36,7 @@
             color: #fff;
             margin: 0 20px;
             text-decoration: none;
+            position: relative;
         }
 
         .upload-container {
@@ -95,6 +96,14 @@
             cursor: pointer;
             font-size: 16px;
         }
+        
+
+.form-group textarea {
+    resize: none;
+}
+
+/* ... Other styles remain unchanged ... */
+
 
         footer {
             background-color: #333;
@@ -192,11 +201,12 @@
                         $image_path = $target_file;
 
                         // Insert data into the database
-                        $sql = "INSERT INTO properties (property_name, property_description, found_location, contact_info, image_path)
-                                VALUES ('$property_name', '$property_description', '$found_location', '$contact_info', '$image_path')";
+                        $sql = "INSERT INTO properties (property_name, property_description, found_location, contact_info, image_path, status)
+                        VALUES ('$property_name', '$property_description', '$found_location', '$contact_info', '$image_path', 'pending')";
+                
 
                         if (mysqli_query($conn, $sql)) {
-                            echo "<script>alert('Property uploaded successfully, click ok to view your property!'); window.location.href='property.php';</script>";
+                            echo "<script>alert('Property uploaded successfully, click ok and wait for the admin to approve it!'); window.location.href='property.php';</script>";
                         } else {
                             echo "<p style='color: red;'>Error: " . mysqli_error($conn) . "</p>";
                         }

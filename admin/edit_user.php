@@ -1,34 +1,3 @@
-<?php
-include_once('../auth/connection.php');
-
-// Check if user ID is set and valid
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $user_id = $_GET['id'];
-
-    // Fetch user details from the database
-    $sql_user_details = "SELECT * FROM tbl_user WHERE user_id = $user_id";
-    $result_user_details = mysqli_query($conn, $sql_user_details);
-
-    // Check if the query was successful
-    if ($result_user_details && mysqli_num_rows($result_user_details) > 0) {
-        $user_details = mysqli_fetch_assoc($result_user_details);
-    } else {
-        // Handle the error, you can customize this part based on your needs
-        die('Error fetching user details: ' . mysqli_error($conn));
-    }
-} else {
-    // Debugging: Display the received ID for investigation
-    die('Received ID: ' . $_GET['id']);
-
-    // Redirect back to the admin_dashboard.php with an error message
-    header("Location: admin_dashboard.php?error=Invalid user ID");
-    exit();
-}
-
-// Close the database connection
-mysqli_close($conn);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,7 +6,48 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
     <style>
-        /* Your styles go here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -45,7 +55,7 @@ mysqli_close($conn);
     <h2>Edit User</h2>
 
     <form action="update_user.php" method="post">
-        <input type="hidden" name="user_id" value="<?php echo $user_details['user_id']; ?>">
+        <input type="hidden" name="user_id" value="<?php echo $user_details['id']; ?>">
 
         <!-- Display user details in input fields for editing -->
         <label for="name">Name:</label>

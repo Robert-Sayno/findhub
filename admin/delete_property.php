@@ -7,13 +7,13 @@ try {
         $property_id = $_GET['id'];
 
         // Delete the property from the database
-        $sql_delete_property = "DELETE FROM properties WHERE property_id = $property_id";
+        $sql_delete_property = "DELETE FROM properties WHERE id = $property_id";
         $result_delete_property = mysqli_query($conn, $sql_delete_property);
 
         // Check if the query was successful
         if ($result_delete_property) {
             // Redirect back to the admin_dashboard.php with a success message
-            header("Location: admin_dashboard.php?success=Property deleted successfully");
+            header("Location: dashboard.php?success=Property deleted successfully");
             exit();
         } else {
             // Handle the error

@@ -71,7 +71,7 @@
 
         footer {
             background-color: #333;
-            color: #fff;
+            color: white;
             text-align: center;
             padding: 15px;
             position: fixed;
@@ -138,7 +138,7 @@
         // Retrieve and display property information from the database
         include_once('auth/connection.php');
 
-        $sql = "SELECT * FROM properties";
+        $sql = "SELECT * FROM properties WHERE status = 'published'";
         $result = mysqli_query($conn, $sql);
 
         if ($result) {
@@ -159,7 +159,7 @@
                     echo '</div>';
                 }
             } else {
-                echo '<p>No properties found.</p>';
+                echo '<p>No published properties found.</p>';
             }
         } else {
             echo '<p style="color: red;">Error: ' . mysqli_error($conn) . '</p>';
